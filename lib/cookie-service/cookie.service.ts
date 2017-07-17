@@ -39,15 +39,19 @@ export class CookieService {
 
   /**
    * @param name Cookie name
+   * @param type Cookie type
    * @returns {any}
    */
-  get( name: string ): string {
+  get( name: string, type?: string ): string {
     if ( this.documentIsAccessible && this.check( name ) ) {
       name = encodeURIComponent( name );
 
       const regExp: RegExp = new RegExp('(?:^' + name + '|;\\s*' + name + ')=(.*?)(?:;|$)', 'g');
       const result: RegExpExecArray = regExp.exec( this.document.cookie );
-
+  
+      if(type == 'object') {
+           return JSON.parse(decodeURIComponent(result[1]));
+      }
       return decodeURIComponent( result[ 1 ] );
     } else {
       return '';
@@ -82,6 +86,7 @@ export class CookieService {
   /**
    * @param name    Cookie name
    * @param value   Cookie value
+   * @param type    Cookie type
    * @param expires Number of days until the cookies expires or an actual `Date`
    * @param path    Cookie path
    * @param domain  Cookie domain
@@ -90,6 +95,7 @@ export class CookieService {
   set(
     name: string,
     value: string,
+    type?: string,
     expires?: number | Date,
     path?: string,
     domain?: string,
@@ -98,9 +104,13 @@ export class CookieService {
     if ( !this.documentIsAccessible ) {
       return;
     }
-
-    let cookieString: string = encodeURIComponent( name ) + '=' + encodeURIComponent( value ) + ';';
-
+    //add check object
+    if(typeof value == 'object') {
+      let cookieString: string = encodeURIComponent( name ) + '=' + encodeURIComponent( JSON.stringify(value) ) + ';';
+    }else {
+        let cookieString: string = encodeURIComponent( name ) + '=' + encodeURIComponent( value ) + ';';
+    }
+    
     if ( expires ) {
       if ( typeof expires === 'number' ) {
         const dateExpires: Date = new Date( new Date().getTime() + expires * 1000 * 60 * 60 * 24 );
@@ -136,7 +146,7 @@ export class CookieService {
       return;
     }
 
-    this.set( name, '', -1, path, domain );
+    this.set( name, '', '', -1, path, domain );
   }
 
   /**
