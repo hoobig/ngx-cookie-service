@@ -42,7 +42,7 @@ export class CookieService {
    * @param type Cookie type
    * @returns {any}
    */
-  get( name: string, type?: string ): string {
+  get( name: string, type?: string ): any {
     if ( this.documentIsAccessible && this.check( name ) ) {
       name = encodeURIComponent( name );
 
