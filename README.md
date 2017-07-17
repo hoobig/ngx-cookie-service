@@ -75,6 +75,8 @@ const cookieExists: boolean = cookieService.check('test');
 
 ```typescript
 const value: string = cookieService.get('test');
+or get cookie pass object
+const value: string = cookieService.get('test', 'object');
 ```
 
 ## getAll(): {};
@@ -87,6 +89,8 @@ const allCookies: {} = cookieService.getAll();
 
 ```typescript
 cookieService.set( 'test', 'Hello World' );
+or pass object
+cookieService.set( 'test', {user: 'test'}, 'object' );
 ```
 
 ## delete( name: string, path?: string, domain?: string ): void;
