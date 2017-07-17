@@ -105,7 +105,7 @@ export class CookieService {
       return;
     }
     //add check object
-    if(typeof value == 'object') {
+    if(type == 'object') {
       let cookieString: string = encodeURIComponent( name ) + '=' + encodeURIComponent( JSON.stringify(value) ) + ';';
     }else {
         let cookieString: string = encodeURIComponent( name ) + '=' + encodeURIComponent( value ) + ';';
